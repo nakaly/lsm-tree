@@ -96,5 +96,25 @@ class SimpleKVS(filePath: String) {
         }
     }
 
+    fun del(key: String): Result<Unit, Exception> {
+        return when (get(key)) {
+            null -> Ok(Unit)
+            else -> {
+                val befPos = raf.length()
+                try {
+                    raf.seek(raf.length())
+                    raf.writeInt(TOMBSTONE)
+                    raf.writeBytes(key)
+                    raf.writeInt(key.length)
+                } catch (e: IOException) {
+                    raf.setLength(befPos)
+                    Err(e)
+                }
+                keyIndex[key] = raf.filePointer
+                Ok(Unit)
+            }
+        }
+    }
+
 }
 
