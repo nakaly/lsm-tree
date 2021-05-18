@@ -1,4 +1,4 @@
-package `LSM-KVS`
+package lsm
 
 import java.io.RandomAccessFile
 

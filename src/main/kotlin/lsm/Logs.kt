@@ -1,0 +1,4 @@
+package lsm
+
+class Logs {
+}

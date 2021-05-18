@@ -1,4 +1,4 @@
-package `LSM-KVS`
+package lsm
 
 class WriteAheadLog {
 }

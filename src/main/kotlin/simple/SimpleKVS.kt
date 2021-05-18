@@ -1,4 +1,4 @@
-package SimpleKVS
+package simple
 
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
@@ -9,18 +9,34 @@ import java.io.RandomAccessFile
 
 
 fun main() {
+    val test = arrayListOf<Int>()
+    test.add(2)
+    test.add(5)
+    test.add(8)
+    test.add(9)
+    test.add(14)
+    test.add(17)
+    println(test.binarySearch(2))
+    println(test.binarySearch(4))
+    println(test.binarySearch(7))
+    println(test.binarySearch(8))
+    println(test.binarySearch(16))
+    println(test.binarySearch(20))
+    println(test.binarySearch(1))
+    println(test.binarySearch(0))
 //    val raf = RandomAccessFile("data/simplekvs/database.txt", "rw")
 //    raf.writeBytes("test")
 //    raf.close()
-    val kvs = SimpleKVS("data/simplekvs/database.txt")
-    kvs.set("key", "1")
-    kvs.set("key2", "2")
-    val value = kvs.get("key")
-    println("value: $value")
-    val value2 = kvs.get("key2")
-    println("value: $value2")
+//    val kvs = SimpleKVS("data/simplekvs/database.txt")
+//    kvs.set("key", "1")
+//    kvs.set("key2", "2")
+//    val value = kvs.get("key")
+//    println("value: $value")
+//    val value2 = kvs.get("key2")
+//    println("value: $value2")
 
 }
+
 
 class SimpleKVS(filePath: String) {
     private val raf = RandomAccessFile(filePath, "rw")
