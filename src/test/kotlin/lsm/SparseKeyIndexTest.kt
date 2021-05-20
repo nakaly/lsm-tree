@@ -12,26 +12,26 @@ class SparseKeyIndexTest {
 
     @Test
     fun not_found() {
-        assertEquals(index.positionRange("arr"), SparseKeyIndex.Position.NotFound)
+        assertEquals(index.positionRange("arr"), SparseKeyIndex.NotFound)
     }
 
     @Test
     fun found() {
-        assertEquals(index.positionRange("foo"), SparseKeyIndex.Position.Found(194L))
-        assertEquals(index.positionRange("bar"), SparseKeyIndex.Position.Found(84L))
-        assertEquals(index.positionRange("key4"), SparseKeyIndex.Position.Found(1204L))
+        assertEquals(index.positionRange("foo"), SparseKeyIndex.Found(194L))
+        assertEquals(index.positionRange("bar"), SparseKeyIndex.Found(84L))
+        assertEquals(index.positionRange("key4"), SparseKeyIndex.Found(1204L))
     }
 
     @Test
     fun range() {
-        assertEquals(index.positionRange("car"), SparseKeyIndex.Position.Range(95L, 194L))
-        assertEquals(index.positionRange("key1z"), SparseKeyIndex.Position.Range(345L, 442L))
+        assertEquals(index.positionRange("car"), SparseKeyIndex.Range(95L, 194L))
+        assertEquals(index.positionRange("key1z"), SparseKeyIndex.Range(345L, 442L))
     }
 
     @Test
     fun tail() {
-        assertEquals(index.positionRange("zey"), SparseKeyIndex.Position.Tail(1204L))
-        assertEquals(index.positionRange("key4a"), SparseKeyIndex.Position.Tail(1204L))
+        assertEquals(index.positionRange("zey"), SparseKeyIndex.Tail(1204L))
+        assertEquals(index.positionRange("key4a"), SparseKeyIndex.Tail(1204L))
     }
 
 }

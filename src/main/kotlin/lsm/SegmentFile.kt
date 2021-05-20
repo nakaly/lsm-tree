@@ -3,7 +3,7 @@ package lsm
 import java.io.File
 import java.io.RandomAccessFile
 
-class SegmentFile(sequenceNo: Int, basePath: String) {
+class SegmentFile(val sequenceNo: Int, basePath: String) {
     private val filePath = "$basePath/segment_file_$sequenceNo.txt"
 
 

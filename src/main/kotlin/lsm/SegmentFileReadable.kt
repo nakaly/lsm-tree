@@ -37,9 +37,9 @@ interface SegmentFileReadable {
         if (valueLen != SegmentFile.TOMBSTONE) {
             val value = ByteArray(valueLen)
             readOnlyRaf.readFully(value)
-            return Value.Exist(String(value))
+            return Exist(String(value))
         } else {
-            return Value.Deleted
+            return DeletedValue
         }
     }
 
@@ -54,23 +54,24 @@ interface SegmentFileReadable {
         readOnlyRaf.close()
     }
 
-    sealed class Got {
-        data class Found(val value: String) : Got()
-        object NotFound : Got()
-        object Deleted : Got()
+    sealed interface Got
+    data class Found(val value: String) : Got
+    object NotFound : Got
+    object Deleted : Got
+
+
+    sealed interface Value {
+        fun toGot(): Got
     }
 
-
-    sealed class Value {
-        data class Exist(val value: String) : Value() {
-            fun toGot(): Got.Found {
-                return Got.Found(value)
-            }
+    data class Exist(val value: String) : Value {
+        override fun toGot(): Found {
+            return Found(value)
         }
+    }
 
-        object Deleted : Value() {
-            fun toGot(): Got.Deleted = Got.Deleted
-        }
+    object DeletedValue : Value {
+        override fun toGot(): Deleted = Deleted
     }
 
 

@@ -11,18 +11,18 @@ sealed class Log {
 
         fun get(key: String): Got {
             return when (val value = index.get(key)) {
-                is Value.Exist -> value.toGot()
-                is Value.Deleted -> Got.Deleted
-                else -> Got.NotFound
+                is SegmentFileReadable.Exist -> value.toGot()
+                is SegmentFileReadable.DeletedValue -> SegmentFileReadable.Deleted
+                else -> SegmentFileReadable.NotFound
             }
         }
 
         fun set(key: String, value: String) {
-            index.set(key, Value.Exist(value))
+            index.set(key, SegmentFileReadable.Exist(value))
         }
 
         fun del(key: String) {
-            index.set(key, Value.Deleted)
+            index.set(key, SegmentFileReadable.DeletedValue)
         }
     }
 }
