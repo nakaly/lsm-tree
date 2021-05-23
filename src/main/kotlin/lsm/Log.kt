@@ -25,4 +25,6 @@ sealed class Log {
             index.set(key, SegmentFileReadable.DeletedValue)
         }
     }
+
+    class SSTableRef(val sStable: SSTable) : Log()
 }
