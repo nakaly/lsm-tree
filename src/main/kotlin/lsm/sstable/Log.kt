@@ -1,7 +1,7 @@
-package lsm
+package lsm.sstable
 
-import lsm.SegmentFileReadable.Got
-import lsm.SegmentFileReadable.Value
+import lsm.sstable.SegmentFileReadable.Got
+import lsm.sstable.SegmentFileReadable.Value
 import java.util.*
 
 sealed class Log {

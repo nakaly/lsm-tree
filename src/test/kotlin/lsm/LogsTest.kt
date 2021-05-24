@@ -1,5 +1,8 @@
 package lsm
 
+import lsm.sstable.Log
+import lsm.sstable.Logs
+import lsm.sstable.SSTable
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.mock

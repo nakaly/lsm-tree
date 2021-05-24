@@ -1,4 +1,4 @@
-package lsm
+package lsm.sstable
 
 import java.io.File
 import java.io.RandomAccessFile

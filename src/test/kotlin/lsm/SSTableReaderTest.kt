@@ -1,5 +1,8 @@
 package lsm
 
+import lsm.sstable.SSTable
+import lsm.sstable.SSTableFactory
+import lsm.sstable.SegmentFileReadable
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance

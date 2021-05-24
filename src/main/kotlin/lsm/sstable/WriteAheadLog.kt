@@ -1,4 +1,4 @@
-package lsm
+package lsm.sstable
 
 class WriteAheadLog {
 }

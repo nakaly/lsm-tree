@@ -1,5 +1,6 @@
 package lsm
 
+import lsm.sstable.SparseKeyIndex
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

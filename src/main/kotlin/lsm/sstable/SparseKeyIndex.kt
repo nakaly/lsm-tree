@@ -1,4 +1,4 @@
-package lsm
+package lsm.sstable
 
 class SparseKeyIndex(val sparseKeys: Array<String>, val keyPositions: Array<Long>) {
 

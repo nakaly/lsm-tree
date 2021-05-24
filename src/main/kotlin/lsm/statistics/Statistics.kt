@@ -1,6 +1,6 @@
-package statistics
+package lsm.statistics
 
-import lsm.Logs
+import lsm.sstable.Logs
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
@@ -24,6 +24,7 @@ class Statistics(val statisticsFile: File, val nextSequenceNo: Int, activeSequen
             writer.close()
         }
     }
+
 
     fun initialize(statisticsFilePath: String): Statistics {
         val file = File(statisticsFilePath)
