@@ -1,22 +1,23 @@
 package lsm
 
-import kotlin.streams.asSequence
+import java.util.*
 
-class Logs(var underlying: Map<Int, Log>) {
+class Logs(var underlying: SortedMap<Int, Log>) {
 
     fun updated(sequenceNo: Int, log: Log): Logs {
-        return Logs(underlying + (sequenceNo to log))
+        underlying.put(sequenceNo, log)
+        return Logs(underlying)
     }
 
     fun activeSequenceNo(): Sequence<Int> {
-        return underlying.values.stream()
+        val temp = underlying.values
             .map {
                 when (it) {
                     is Log.SSTableRef -> it.sStable.sequenceNo
                     is Log.MemTable -> -1
                 }
             }.filter { it >= 0 }
-            .asSequence()
+        return temp.asSequence()
     }
 
 
@@ -30,4 +31,8 @@ class Logs(var underlying: Map<Int, Log>) {
         }
         return SegmentFileReadable.NotFound
     }
+
+    constructor() : this(TreeMap<Int, Log>(Comparator.reverseOrder()))
+
 }
+
