@@ -1,9 +1,6 @@
 package lsm
 
-import lsm.sstable.Log
-import lsm.sstable.Logs
-import lsm.sstable.SSTableFactory
-import lsm.sstable.WriteAheadLog
+import lsm.sstable.*
 import lsm.statistics.Statistics
 
 fun main() {
@@ -11,12 +8,31 @@ fun main() {
 }
 
 class LSMTree(
-    statistics: Statistics,
-    memTable: Log.MemTable,
-    logs: Logs,
-    writeAheadLog: WriteAheadLog,
-    ssTableFactory: SSTableFactory
+    val statistics: Statistics,
+    val memTable: Log.MemTable,
+    val logs: Logs,
+    val writeAheadLog: WriteAheadLog,
+    val ssTableFactory: SSTableFactory
 ) {
+
+    fun set(key: String, value: String): Unit {
+        memTable.set(key, value)
+        if (memTable.isOverMaxSize()) {
+            val next = statistics.nextSequenceNo
+            logs.updated(
+                next,
+                Log.SSTableRef(ssTableFactory.apply(statistics.nextSequenceNo, memTable.iterator()))
+            )
+        }
+    }
+
+    fun get(key: String): SegmentFileReadable.Got {
+        return when (memTable.get(key)) {
+            SegmentFileReadable.NotFound -> logs.read(key)
+            else -> memTable.get(key)
+        }
+    }
+
     companion object {
         fun initialize(
             statisticsFilePath: String,
