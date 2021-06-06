@@ -7,6 +7,7 @@ import java.io.FileReader
 import java.io.FileWriter
 
 class Statistics(val statisticsFile: File, val nextSequenceNo: Int, activeSequenceNo: Sequence<Int>) {
+
     private fun formatStatistics(nextSequenceNo: Int, activeSequenceNo: Sequence<Int>): String {
         return "$nextSequenceNo ${activeSequenceNo.joinToString(",", "[", "]")}"
     }
@@ -26,34 +27,37 @@ class Statistics(val statisticsFile: File, val nextSequenceNo: Int, activeSequen
     }
 
 
-    fun initialize(statisticsFilePath: String): Statistics {
-        val file = File(statisticsFilePath)
-        if (!file.exists()) {
-            if (!file.createNewFile()) {
-                throw IllegalStateException("files not found: ${statisticsFile.absolutePath}")
+    companion object {
+        fun initialize(statisticsFilePath: String): Statistics {
+            val file = File(statisticsFilePath)
+            if (!file.exists()) {
+                if (!file.createNewFile()) {
+                    throw IllegalStateException("files not found: ${statisticsFilePath}")
+                }
+                val writer = FileWriter(file)
+                try {
+                    writer.write("0 []")
+                    writer.flush()
+                } finally {
+                    writer.close()
+                }
             }
-            val writer = FileWriter(file)
+
+            val reader = BufferedReader(FileReader(file))
             try {
-                writer.write("0 []")
-                writer.flush()
+                val statistics = reader.readLine().split("\\s+")
+                val nextSequenceNo = statistics[0].toInt()
+                val activeSequenceNo =
+                    statistics[1]
+                        .split(",")
+                        .filter { it.isBlank() }
+                        .map { it.toInt() }
+                        .asSequence()
+                return Statistics(file, nextSequenceNo, activeSequenceNo)
             } finally {
-                writer.close()
+                reader.close()
             }
         }
 
-        val reader = BufferedReader(FileReader(file))
-        try {
-            val statistics = reader.readLine().split("\\s+")
-            val nextSequenceNo = statistics[0].toInt()
-            val activeSequenceNo =
-                statistics[1]
-                    .split(",")
-                    .filter { it.isBlank() }
-                    .map { it.toInt() }
-                    .asSequence()
-            return Statistics(file, nextSequenceNo, activeSequenceNo)
-        } finally {
-            reader.close()
-        }
     }
 }
