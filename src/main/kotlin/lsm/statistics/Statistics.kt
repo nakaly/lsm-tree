@@ -6,7 +6,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-class Statistics(val statisticsFile: File, val nextSequenceNo: Int, activeSequenceNo: Sequence<Int>) {
+class Statistics(val statisticsFile: File, val nextSequenceNo: Int, val activeSequenceNo: List<Int>) {
 
     private fun formatStatistics(nextSequenceNo: Int, activeSequenceNo: Sequence<Int>): String {
         return "$nextSequenceNo ${activeSequenceNo.joinToString(",", "[", "]")}"
@@ -52,7 +52,7 @@ class Statistics(val statisticsFile: File, val nextSequenceNo: Int, activeSequen
                         .split(",")
                         .filter { it.isBlank() }
                         .map { it.toInt() }
-                        .asSequence()
+
                 return Statistics(file, nextSequenceNo, activeSequenceNo)
             } finally {
                 reader.close()

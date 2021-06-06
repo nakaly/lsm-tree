@@ -17,12 +17,24 @@ class LSMTree(
     writeAheadLog: WriteAheadLog,
     ssTableFactory: SSTableFactory
 ) {
-
-
     companion object {
-        fun initialize(statisticsFilePath: String, segmentFileBathPath: String, writeAheadLogFilePath: String) {
-            Statistics.initialize("data/lsmtree")
+        fun initialize(
+            statisticsFilePath: String,
+            segmentFileBathPath: String,
+            writeAheadLogFilePath: String
+        ): LSMTree {
+            val statistics = Statistics.initialize(statisticsFilePath)
+            val writeAheadLog = WriteAheadLog.initialize(writeAheadLogFilePath)
+            val memTable: Log.MemTable = writeAheadLog.recovery()
+            val logs = Logs()
 
+            statistics.nextSequenceNo
+            val ssTableFactory = SSTableFactory(5, segmentFileBathPath)
+
+            statistics.activeSequenceNo.forEach {
+                logs.updated(it, Log.SSTableRef(ssTableFactory.recovery(it)))
+            }
+            return LSMTree(statistics, memTable, logs, writeAheadLog, ssTableFactory)
         }
     }
 }
