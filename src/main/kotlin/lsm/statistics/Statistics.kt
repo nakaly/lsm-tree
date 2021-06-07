@@ -45,7 +45,7 @@ class Statistics(val statisticsFile: File, val nextSequenceNo: Int, val activeSe
 
             val reader = BufferedReader(FileReader(file))
             try {
-                val statistics = reader.readLine().split("\\s+")
+                val statistics = reader.readLine().split("\\s+".toRegex())
                 val nextSequenceNo = statistics[0].toInt()
                 val activeSequenceNo =
                     statistics[1]

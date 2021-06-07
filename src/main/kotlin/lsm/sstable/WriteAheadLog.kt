@@ -9,10 +9,10 @@ class WriteAheadLog(val raf: RandomAccessFile) : SegmentFileReadable {
     override val readOnlyRaf: RandomAccessFile = raf
 
     fun set(key: String, value: String): Unit {
-        raf.writeBytes(value)
-        raf.writeInt(value.length)
-        raf.writeBytes(key)
         raf.writeInt(key.length)
+        raf.writeBytes(key)
+        raf.writeInt(value.length)
+        raf.writeBytes(value)
     }
 
     fun del(key: String): Unit {

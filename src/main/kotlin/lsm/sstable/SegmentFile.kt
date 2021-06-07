@@ -23,7 +23,7 @@ class SegmentFile(val sequenceNo: Int, basePath: String) {
     fun createSegmentFile(): Boolean {
         val file = File(filePath)
         if (file.exists()) {
-            throw IllegalStateException("lready exist segment file: $filePath")
+            throw IllegalStateException("already exist segment file: $filePath")
         }
         return file.createNewFile()
     }

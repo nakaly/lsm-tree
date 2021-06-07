@@ -5,7 +5,7 @@ import lsm.sstable.SegmentFileReadable.Value
 import java.util.*
 
 sealed class Log {
-    class MemTable(val index: TreeMap<String, Value>, val maxSize: Int = 10000) : Log() {
+    class MemTable(val index: TreeMap<String, Value>, val maxSize: Int = 3) : Log() {
         fun isOverMaxSize(): Boolean = index.size >= maxSize
         fun iterator(): MutableIterator<MutableMap.MutableEntry<String, Value>> = index.entries.iterator()
 
