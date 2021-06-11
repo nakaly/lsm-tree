@@ -58,13 +58,13 @@ class LSMTree(
             val statistics = Statistics.initialize(statisticsFilePath)
             val writeAheadLog = WriteAheadLog.initialize(writeAheadLogFilePath)
             val memTable: Log.MemTable = writeAheadLog.recovery()
-            val logs = Logs()
+            var logs = Logs()
 
             statistics.nextSequenceNo
             val ssTableFactory = SSTableFactory(5, segmentFileBathPath)
 
             statistics.activeSequenceNo.forEach {
-                logs.updated(it, Log.SSTableRef(ssTableFactory.recovery(it)))
+                logs = logs.updated(it, Log.SSTableRef(ssTableFactory.recovery(it)))
             }
             return LSMTree(statistics, memTable, logs, writeAheadLog, ssTableFactory)
         }

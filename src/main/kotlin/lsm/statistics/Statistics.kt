@@ -6,7 +6,7 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-class Statistics(val statisticsFile: File, val nextSequenceNo: Int, val activeSequenceNo: List<Int>) {
+class Statistics(val statisticsFile: File, var nextSequenceNo: Int, val activeSequenceNo: MutableList<Int>) {
 
     private fun formatStatistics(nextSequenceNo: Int, activeSequenceNo: Sequence<Int>): String {
         return "$nextSequenceNo ${activeSequenceNo.joinToString(",", "[", "]")}"
@@ -24,6 +24,8 @@ class Statistics(val statisticsFile: File, val nextSequenceNo: Int, val activeSe
         } finally {
             writer.close()
         }
+        activeSequenceNo.add(this.nextSequenceNo)
+        this.nextSequenceNo = nextSequenceNo
     }
 
 
@@ -49,11 +51,12 @@ class Statistics(val statisticsFile: File, val nextSequenceNo: Int, val activeSe
                 val nextSequenceNo = statistics[0].toInt()
                 val activeSequenceNo =
                     statistics[1]
+                        .substring(1 until statistics[1].length - 1)
                         .split(",")
-                        .filter { it.isBlank() }
+                        .filter { !it.isBlank() }
                         .map { it.toInt() }
 
-                return Statistics(file, nextSequenceNo, activeSequenceNo)
+                return Statistics(file, nextSequenceNo, activeSequenceNo.toMutableList())
             } finally {
                 reader.close()
             }
