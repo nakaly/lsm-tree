@@ -22,7 +22,7 @@ class SSTableFactory(private val sparseIndexPer: Int, private val segmentFileBat
 
     fun apply(
         sequenceNo: Int,
-        iterator: MutableIterator<MutableMap.MutableEntry<String, SegmentFileReadable.Value>>
+        iterator: Iterator<Pair<String, SegmentFileReadable.Value>>
     ): SSTable {
         val segmentFile = SegmentFile(sequenceNo, segmentFileBathPath)
         segmentFile.createSegmentFile()

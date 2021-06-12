@@ -40,6 +40,23 @@ class LSMTree(
             memTable = Log.MemTable(TreeMap<String, SegmentFileReadable.Value>())
             writeAheadLog.clear()
         }
+        if (logs.underlying.size > 2) {
+            val mergedSequenceNo = statistics.activeSequenceNo[statistics.activeSequenceNo.size - 1] + 1
+            val mergedLog = Log.SSTableRef(
+                ssTableFactory.apply(
+                    mergedSequenceNo,
+                    SSTableMergeIterator(logs.underlying.mapNotNull {
+                        when (val value = it.value) {
+                            is Log.SSTableRef -> value.sStable
+                            is Log.MemTable -> null
+                        }
+                    })
+                )
+            )
+            logs = Logs()
+            logs = logs.updated(mergedSequenceNo, mergedLog)
+        }
+
     }
 
     fun get(key: String): SegmentFileReadable.Got {

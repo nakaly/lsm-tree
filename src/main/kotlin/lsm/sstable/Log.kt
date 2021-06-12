@@ -7,7 +7,7 @@ import java.util.*
 sealed class Log {
     class MemTable(val index: TreeMap<String, Value>, val maxSize: Int = 3) : Log() {
         fun isOverMaxSize(): Boolean = index.size >= maxSize
-        fun iterator(): MutableIterator<MutableMap.MutableEntry<String, Value>> = index.entries.iterator()
+        fun iterator(): Iterator<Pair<String, Value>> = index.entries.map { Pair(it.key, it.value) }.iterator()
 
         fun get(key: String): Got {
             return when (val value = index.get(key)) {

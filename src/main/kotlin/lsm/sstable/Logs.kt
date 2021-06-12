@@ -27,7 +27,9 @@ class Logs(var underlying: SortedMap<Int, Log>) {
                 is Log.MemTable -> it.get(key)
                 is Log.SSTableRef -> it.sStable.newReader().get(key)
             }
-            return value
+            if (value != SegmentFileReadable.NotFound) {
+                return value
+            }
         }
         return SegmentFileReadable.NotFound
     }
