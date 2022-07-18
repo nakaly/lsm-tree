@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.31"
 }
 
 group = "me.st20142"
@@ -10,6 +10,7 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+
 }
 
 val scalaBinary = "2.13"
@@ -17,6 +18,9 @@ val scalaBinary = "2.13"
 dependencies {
     implementation("com.michael-bull.kotlin-result:kotlin-result:1.1.11")
     implementation(platform("com.typesafe.akka:akka-bom_${scalaBinary}:2.6.15"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("io.reactivex.rxjava3:rxkotlin:3.0.1")
 
     implementation("com.typesafe.akka:akka-actor-typed_${scalaBinary}")
     testImplementation("com.typesafe.akka:akka-actor-testkit-typed_${scalaBinary}")
